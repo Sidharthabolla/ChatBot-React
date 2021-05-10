@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { userMessage, sendMessage } from "../actions/watson";
 import { useFormatMessage } from 'react-intl-hooks';
-import { english, spanish } from '../actions';
+import { english, spanish, userMsg } from '../actions';
 
 const Chat = ({ chat, userMessage, sendMessage }) => {
-  const language = useSelector(state => state.response)
+  const response = useSelector(state => state.usermsg);
+  console.log(response);
   const dispatch = useDispatch();
   const t = useFormatMessage();
   const [message, setMessage] = useState("");
@@ -20,7 +21,7 @@ const Chat = ({ chat, userMessage, sendMessage }) => {
       userMessage(message);
       sendMessage(message);
       setMessage("");
-      dispatch(spanish());
+      dispatch(userMsg(message.toUpperCase()));
     }
   };
 
@@ -30,8 +31,8 @@ const Chat = ({ chat, userMessage, sendMessage }) => {
     <div className="chat">
         <h1>Chatbot</h1>
         <div>
-          <button onClick={()=> dispatch(english())}>English</button>
-          <button onClick={()=> dispatch(spanish())}>Spanish</button>
+          <button className="button" onClick={()=> dispatch(english())}>English</button>
+          <button className="button" onClick={()=> dispatch(spanish())}>Spanish</button>
         </div>
         <div className="historyContainer">
           {chat.length === 0
@@ -41,6 +42,12 @@ const Chat = ({ chat, userMessage, sendMessage }) => {
             key={index}>
             {t({ id: msg.message.toUpperCase() })}
             </div>)}
+          {response.length === 0 
+            ? ""
+            :
+            <div className="bot">{t({ id: response.toUpperCase() })}</div>}
+          {response.length !== 0 && response === 'SURE! PLEASE CHOOSE A DATE' ?
+           <div className="bot">Date Picker</div> : ""}
           <div ref={endOfMessages}></div>
         </div>
         <input

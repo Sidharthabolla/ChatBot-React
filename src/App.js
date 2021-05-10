@@ -3,7 +3,6 @@ import "./App.css";
 import { Provider } from "react-redux";
 import store from "./store";
 import Responser from "./components/Responser";
-import { createSession } from "./actions/watson";
 
 const App = () => {
   return (

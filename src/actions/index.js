@@ -12,7 +12,7 @@ export const spanish = () => {
 
 export const userMsg = (msg) => {
   return{
-    type: 'SPANISH',
+    type: 'USERMSG',
     payload: msg
   };
 };
