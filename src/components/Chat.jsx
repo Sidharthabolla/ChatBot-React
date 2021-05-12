@@ -3,10 +3,12 @@ import { connect, useSelector, useDispatch } from "react-redux";
 import { userMessage, sendMessage } from "../actions/watson";
 import { useFormatMessage } from 'react-intl-hooks';
 import { english, spanish, userMsg } from '../actions';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Chat = ({ chat, userMessage, sendMessage }) => {
   const response = useSelector(state => state.usermsg);
-  console.log(response);
+  const [startDate, setStartDate] = useState(new Date());
   const dispatch = useDispatch();
   const t = useFormatMessage();
   const [message, setMessage] = useState("");
@@ -46,8 +48,8 @@ const Chat = ({ chat, userMessage, sendMessage }) => {
             ? ""
             :
             <div className="bot">{t({ id: response.toUpperCase() })}</div>}
-          {response.length !== 0 && response === 'SURE! PLEASE CHOOSE A DATE' ?
-           <div className="bot">Date Picker</div> : ""}
+          {response.length !== 0 && response.toUpperCase() === 'SURE! PLEASE CHOOSE A DATE' ?
+            <DatePicker selected={startDate} onChange={date => setStartDate(date)} /> : ""}
           <div ref={endOfMessages}></div>
         </div>
         <input
